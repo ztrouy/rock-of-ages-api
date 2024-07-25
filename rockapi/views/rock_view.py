@@ -40,7 +40,7 @@ class RockTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Type
-        fields = ( 'label', )
+        fields = ( 'id', 'label', )
 
 
 class RockUserSerializer(serializers.ModelSerializer):
