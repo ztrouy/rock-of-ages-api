@@ -54,8 +54,12 @@ class RockView(ViewSet):
         """
         try:
             rock = Rock.objects.get(pk=pk)
-            rock.delete()
-            return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+            if rock.user == request.auth.user:
+                rock.delete()
+                return Response(None, status=status.HTTP_204_NO_CONTENT)
+            
+            return Response({"message": "User not authorized"}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Rock.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
