@@ -55,7 +55,7 @@ class RockView(ViewSet):
         try:
             rock = Rock.objects.get(pk=pk)
 
-            if rock.user == request.auth.user:
+            if rock.user.id == request.auth.user.id:
                 rock.delete()
                 return Response(None, status=status.HTTP_204_NO_CONTENT)
             
