@@ -16,11 +16,18 @@ class RockView(ViewSet):
             Response -- JSON serialized array
         """
 
+        owner_only = self.request.query_params.get("owner", None)
+
         try:
             rocks = Rock.objects.all()
+
+            if owner_only is not None and owner_only == "current":
+                rocks = rocks.filter(user=request.auth.user)
+
             serialized = RockSerializer(rocks, many=True)
             
             return Response(serialized.data, status=status.HTTP_200_OK)
+        
         except Exception as ex:
             return HttpResponseServerError(ex)
 
